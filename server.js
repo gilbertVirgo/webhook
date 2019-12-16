@@ -10,6 +10,8 @@ app.post("/github", async (req, res) => {
     try {
         const {name} = req.body.repository;
 
+        console.log("Starting deploy process");
+
         const {stdout, stderr} = await exec(`bash ./deploy.sh ${name}`);
 
         if(stderr) throw stderr;
