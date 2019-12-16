@@ -3,7 +3,8 @@ const app = express();
 
 app.use(express.json());
 
-const {exec} = require("child_process");
+const util = require('util');
+const exec = util.promisify(require('child_process').exec);
 
 app.post("/github", async (req, res) => {
     try {
