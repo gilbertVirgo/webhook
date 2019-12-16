@@ -4,6 +4,7 @@ const app = express();
 app.use(express.json());
 
 const { spawn } = require('child_process');
+const fs = require("fs").promises;
 
 app.post("/github", async (req, res) => {
     try {
@@ -13,25 +14,16 @@ app.post("/github", async (req, res) => {
 
         const cmd = spawn('bash', ['./deploy.sh', name]);
 
-        cmd.stdout.on('data', (data) => {
-            console.log(`stdout: ${data}`);
-        });
+        const log = async data => await fs.appendFile("./log", data);
 
-        cmd.stderr.on('data', (data) => {
-            console.error(`stderr: ${data}`);
-        });
+        cmd.stdout.on('data', log);
+        cmd.stderr.on('data', log);
 
-        cmd.on('close', (code) => {
-            console.log(`Process exited with code ${code}`);
-
-            console.log(`Handled push request on repository "${name}"`);
-
-            res.status(200).json({success: true});
-        });
+        res.status(200).json({success: true});
     } catch(error) {
         console.error("Error:", error);
 
-        res.status(500).json({error});
+        res.status(500).json({success: false, error});
     }
 }); 
 
