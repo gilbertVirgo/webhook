@@ -11,10 +11,10 @@ app.post("/github", async (req, res) => {
 
         const {stdout, stderr} = await exec(`bash ./deploy.sh ${name}`);
 
-        res.status(200).json({success: true});
-
         if(stderr) throw stderr;
         if(stdout) console.log("Process out:", stdout);
+
+        res.status(200).json({success: true});
     } catch(error) {
         console.error("Error:", error);
 
