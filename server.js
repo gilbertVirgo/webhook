@@ -16,7 +16,7 @@ app.post("/github", async (req, res) => {
         if(stderr) throw stderr;
         if(stdout) console.log("Process out:", stdout);
     } catch(error) {
-        console.error(error);
+        console.error("Error:", error);
 
         res.status(500).json({error});
     }
