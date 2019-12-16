@@ -2,7 +2,11 @@ const express = require("express");
 const app = express();
 
 app.post("/github", (req, res) => {
-    console.log("req.body.repository", req.body.repository);
+    try {
+        console.log(req.body);
+    } catch(error) {
+        console.error(error);
+    }
 
     res.status(200).json({success: true});
 }); 
