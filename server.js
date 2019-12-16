@@ -3,14 +3,20 @@ const app = express();
 
 app.use(express.json());
 
-app.post("/github", (req, res) => {
+const {exec} = require("child_process");
+
+app.post("/github", async (req, res) => {
     try {
-        console.log(req);
+        const {name} = req.body.repository;
+
+        const {stdout, stderr} = await exec(`bash ./deploy.sh ${name}`);
+
+        res.status(200).json({stdout, stderr, success: true});
     } catch(error) {
         console.error(error);
-    }
 
-    res.status(200).json({success: true});
+        res.status(500).json({error});
+    }
 }); 
 
 app.get("/*", (req, res) => {
