@@ -3,7 +3,7 @@ const app = express();
 
 app.post("/github", (req, res) => {
     try {
-        console.log(req.body);
+        console.log(req);
     } catch(error) {
         console.error(error);
     }
